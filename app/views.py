@@ -1,9 +1,18 @@
+import datetime
+
+import requests
 from django.shortcuts import render
-from django.http import HttpResponseNotFound, HttpResponseRedirect
+from django.http import HttpResponseNotFound, HttpResponseBadRequest, HttpResponse
+from django.utils import timezone
+
 from .models import *
 
-
+ua = {"User-Agent": 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                    'Chrome/106.0.0.0 YaBrowser/22.11.5.715 Yowser/2.5 Safari/537.36'}
 NO_IMAGE_LINK = 'media/default/no_image.png'
+HH_ENDPOINT = 'https://api.hh.ru/vacancies/'
+last_fetch = timezone.now() - datetime.timedelta(days=333)
+cache = []
 
 
 # Create your views here.
@@ -20,8 +29,7 @@ def profs(request):
 
 
 def prof_overview(request, prof_id):
-	profession = Profession.objects.filter(id=prof_id).first()
-	if not profession:
+	if not (profession := Profession.objects.filter(id=prof_id).first()):
 		return HttpResponseNotFound()
 	prof_descriptions = profession.description_blocks.all().values_list('title', 'description', named=True)
 	payload = {
@@ -32,8 +40,7 @@ def prof_overview(request, prof_id):
 
 
 def prof_view_vostr(request, prof_id):
-	profession = Profession.objects.filter(id=prof_id).first()
-	if not profession:
+	if not (profession := Profession.objects.filter(id=prof_id).first()):
 		return HttpResponseNotFound()
 	year_diagram = YearDiagram.objects.filter(profession=profession).first()
 	vacancies_diagram = VacanciesDiagram.objects.filter(profession=profession).first()
@@ -78,8 +85,7 @@ def prof_view_vostr(request, prof_id):
 
 
 def prof_view_geo(request, prof_id):
-	profession = Profession.objects.filter(id=prof_id).first()
-	if not profession:
+	if not (profession := Profession.objects.filter(id=prof_id).first()):
 		return HttpResponseNotFound()
 	cities_diagram = CitiesDiagram.objects.filter(profession=profession).first()
 	cities_vacancies_diagram = CitiesVacanciesDiagram.objects.filter(profession=profession).first()
@@ -124,8 +130,29 @@ def prof_view_geo(request, prof_id):
 
 
 def years_view(request):
-	pass
+	years = Year.objects.filter(is_visible=True).all().values_list('year', named=True)
+	return render(request, 'app/years.html', {'years': years})
 
 
 def skills_year_view(request, year):
-	pass
+	if not (year := Year.objects.filter(year=year).first()):
+		return HttpResponseNotFound()
+	year_skills = Skill.objects.filter(year=year).order_by('-weight').values_list('name', 'weight', named=True)
+	return render(request, 'app/year_skills.html', {'year': year, 'skills': year_skills})
+
+
+def last_vacancies(request):
+	global cache, last_fetch
+	if last_fetch > timezone.now() - datetime.timedelta(minutes=5):
+		return render(request, 'app/last_vacancies.html', {'content': cache})
+	response = requests.get(HH_ENDPOINT + '?per_page=10', headers=ua)
+	if response.status_code != 200:
+		return HttpResponseBadRequest()
+	last_fetch = timezone.now()
+	ids = [item.get('id') for item in response.json()['items']]
+	cache = []
+	for _id in ids:
+		resp = requests.get(HH_ENDPOINT + f'{_id}/', headers=ua)
+		if resp.status_code == 200:
+			cache.append(resp.json())
+	return render(request, 'app/last_vacancies.html', {'content': cache})

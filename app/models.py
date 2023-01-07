@@ -121,6 +121,7 @@ class VacanciesDiagram(models.Model):
 
 class Year(models.Model):
 	year = models.IntegerField(verbose_name='Год', unique=True)
+	is_visible = models.BooleanField(verbose_name='Видно на сайте?', default=True)
 	
 	def __str__(self):
 		return f'{self.year} год'

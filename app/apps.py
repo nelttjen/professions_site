@@ -2,6 +2,7 @@ import os
 import shutil
 
 from django.apps import AppConfig as Appcfg
+from django import template
 
 
 class AppConfig(Appcfg):
