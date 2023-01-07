@@ -1,7 +1,7 @@
 import base64
 
 from django.db import models
-
+from ckeditor.fields import RichTextField
 
 # Create your models here.
 class Profession(models.Model):
@@ -22,10 +22,12 @@ class Profession(models.Model):
 
 class ProfessionDescriptionBlock(models.Model):
 	title = models.CharField(verbose_name='Заголовок описания', max_length=500, default='Заголовок')
-	description = models.TextField(verbose_name='Текст описания', default='Без описания')
+	description = RichTextField(verbose_name='Текст описания', default='Без описания')
 	
 	def __str__(self):
-		return f'Описание для профессии (id{self.id})'
+		if self.profession_set.first():
+			return f'Описание для профессии {self.profession_set.first().name}'
+		return 'Описание для профессии (Не привязано)'
 	
 	class Meta:
 		verbose_name = 'Описание профессии'

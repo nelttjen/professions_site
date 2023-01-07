@@ -8,7 +8,7 @@ NO_IMAGE_LINK = 'media/default/no_image.png'
 
 # Create your views here.
 def index(request):
-	return HttpResponseRedirect('/professions/')
+	return render(request, 'app/index.html')
 
 
 def profs(request):

@@ -1,4 +1,5 @@
 import os
+import shutil
 
 from django.apps import AppConfig as Appcfg
 
@@ -8,6 +9,7 @@ class AppConfig(Appcfg):
     name = 'app'
 
     def ready(self):
+        shutil.rmtree('media/cache/') if os.path.exists('media/cache/') else None
         roots = (
             'media/',
             'media/cache/',

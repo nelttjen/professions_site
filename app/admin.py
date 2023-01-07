@@ -2,10 +2,18 @@ from django.contrib import admin
 from .models import *
 
 
+class DescriptionsInline(admin.TabularInline):
+	model = Profession.description_blocks.through
+
+
 # Register your models here.
 @admin.register(Profession)
 class ProfessionAdmin(admin.ModelAdmin):
-	pass
+	list_display = ('id', 'name', 'is_visible', )
+	list_filter = ('is_visible', )
+	list_display_links = ('id', 'name')
+	exclude = ('description_blocks', )
+	inlines = (DescriptionsInline,)
 
 
 @admin.register(ProfessionDescriptionBlock)

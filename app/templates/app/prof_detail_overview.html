@@ -4,6 +4,10 @@
     <h1>{{ prof.name }}</h1>
     {% for desc in prof_descs %}
         <h2>{{ desc.title }}</h2>
-        <p>{{ desc.description }}</p>
+        <div>
+        {% autoescape off %}
+         {{ desc.description }}
+        {% endautoescape %}
+        </div>
     {% endfor %}
 {% endblock %}
