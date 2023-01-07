@@ -7,7 +7,7 @@
 4. cd ../..
 5. pip install -r requirements.txt
 6. python manage.py migrate
-7. python manage.py ruserver
+7. python manage.py runserver
 
 # Создать юзера:
 python manage.py createsuperuser
