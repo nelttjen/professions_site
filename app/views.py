@@ -29,9 +29,10 @@ def profs(request):
 
 
 def prof_overview(request, prof_id):
-	if not (profession := Profession.objects.filter(id=prof_id).first()):
+	if not (profession := Profession.objects.filter(id=prof_id, is_visible=True).first()):
 		return HttpResponseNotFound()
-	prof_descriptions = profession.description_blocks.all().values_list('title', 'description', named=True)
+	prof_descriptions = Profession.objects.filter(id=prof_id).prefetch_related('professiondescriptionblock_set')\
+		.values_list('professiondescriptionblock__title', 'professiondescriptionblock__description', named=True)
 	payload = {
 		'prof': profession,
 		'prof_descs': prof_descriptions
@@ -40,7 +41,7 @@ def prof_overview(request, prof_id):
 
 
 def prof_view_vostr(request, prof_id):
-	if not (profession := Profession.objects.filter(id=prof_id).first()):
+	if not (profession := Profession.objects.filter(id=prof_id, is_visible=True).first()):
 		return HttpResponseNotFound()
 	year_diagram = YearDiagram.objects.filter(profession=profession).first()
 	vacancies_diagram = VacanciesDiagram.objects.filter(profession=profession).first()
@@ -85,7 +86,7 @@ def prof_view_vostr(request, prof_id):
 
 
 def prof_view_geo(request, prof_id):
-	if not (profession := Profession.objects.filter(id=prof_id).first()):
+	if not (profession := Profession.objects.filter(id=prof_id, is_visible=True).first()):
 		return HttpResponseNotFound()
 	cities_diagram = CitiesDiagram.objects.filter(profession=profession).first()
 	cities_vacancies_diagram = CitiesVacanciesDiagram.objects.filter(profession=profession).first()
@@ -129,16 +130,19 @@ def prof_view_geo(request, prof_id):
 	return render(request, 'app/prof_detail_diagram.html', payload)
 
 
-def years_view(request):
-	years = Year.objects.filter(is_visible=True).all().values_list('year', named=True)
-	return render(request, 'app/years.html', {'years': years})
+def years_view(request, prof_id):
+	if not (prof := Profession.objects.filter(id=prof_id, is_visible=True).first()):
+		return HttpResponseNotFound()
+	years = Year.objects.filter(is_visible=True, profession_id=prof_id).all().order_by('-year').\
+		values_list('year', named=True)
+	return render(request, 'app/years.html', {'years': years, 'prof': prof})
 
 
-def skills_year_view(request, year):
-	if not (year := Year.objects.filter(year=year).first()):
+def skills_year_view(request, prof_id, year):
+	if not (year := Year.objects.filter(profession_id=prof_id, year=year, is_visible=True).first()):
 		return HttpResponseNotFound()
 	year_skills = Skill.objects.filter(year=year).order_by('-weight').values_list('name', 'weight', named=True)
-	return render(request, 'app/year_skills.html', {'year': year, 'skills': year_skills})
+	return render(request, 'app/year_skills.html', {'year': year, 'skills': year_skills, 'prof': year.profession})
 
 
 def last_vacancies(request):

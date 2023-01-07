@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% include 'app/include/prof_head.html' %}
     <h1>Доступные года:</h1>
     {% for year in years %}
-        <a href="/year/{{ year.year }}/">{{ year.year }} год</a>
+        <a href="/professions/{{ prof.id }}/year/{{ year.year }}/">{{ year.year }} год</a>
     {% endfor %}
 
 {% endblock %}

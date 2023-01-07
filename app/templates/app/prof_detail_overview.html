@@ -3,10 +3,10 @@
     {% include 'app/include/prof_head.html' %}
     <h1>{{ prof.name }}</h1>
     {% for desc in prof_descs %}
-        <h2>{{ desc.title }}</h2>
+        <h2>{{ desc.professiondescriptionblock__title }}</h2>
         <div>
         {% autoescape off %}
-         {{ desc.description }}
+         {{ desc.professiondescriptionblock__description }}
         {% endautoescape %}
         </div>
     {% endfor %}

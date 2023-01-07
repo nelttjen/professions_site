@@ -1,11 +1,17 @@
 {% extends 'base.html' %}
 {% block content %}
-    <h3>=====</h3>
-    <a href="/year/"> <---Назад</a>
+    {% include 'app/include/prof_head.html' %}
+    <a href="/professions/{{ prof.id }}/year/"> <---Назад</a>
+    <h1>{{ prof.name }}</h1>
     <h2>{{ year.year }} год</h2>
     <p>Навык: % востребованости </p>
-    {% for skill in skills %}
-        <p>{{ skill.name }}: {{ skill.weight }}%</p>
-    {% endfor %}
+    {% if skills %}
+         {% for skill in skills %}
+            <p>{{ skill.name }}: {{ skill.weight }}%</p>
+        {% endfor %}
+    {% else %}
+        <p>Нет данных</p>
+    {% endif %}
+
 
 {% endblock %}
