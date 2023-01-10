@@ -13,3 +13,10 @@ def normalize_date(val):
 @register.filter(name='normal_cur')
 def normal_cur(val):
 	return val.replace('RUR', 'RUB')
+
+
+@register.filter(name='strip_tags')
+def strip_tags(val):
+	import re
+	clean = re.compile('<.*?>')
+	return re.sub(clean, '', val)
