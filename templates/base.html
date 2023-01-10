@@ -1,4 +1,5 @@
 {% load static %}
+{% load normal_date %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,12 +10,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <meta name="theme-color" content="#111111">
-    <link rel="stylesheet" href="{% static 'fonts/MontserratRegular.woff2' %}" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{% static 'fonts/MontserratMedium.woff2' %}" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{% static 'fonts/MontserratSemiBold.woff2' %}" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{% static 'fonts/MontserratBold.woff2' %}" as="font" type="font/woff2" crossorigin>
-    <link rel="stylesheet" href="{% static 'css/vendor.css' %}">
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+    <link rel="stylesheet" href="{% static 'fonts/MontserratRegular.woff2' %}?reload={% random_int 1 999999 %}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{% static 'fonts/MontserratMedium.woff2' %}?reload={% random_int 1 999999 %}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{% static 'fonts/MontserratSemiBold.woff2' %}?reload={% random_int 1 999999 %}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{% static 'fonts/MontserratBold.woff2' %}?reload={% random_int 1 999999 %}" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="{% static 'css/vendor.css' %}?reload={% random_int 1 999999 %}">
+    <link rel="stylesheet" href="{% static 'css/main.css' %}?reload={% random_int 1 999999 %}">
     {% block head %}
 
     {% endblock %}

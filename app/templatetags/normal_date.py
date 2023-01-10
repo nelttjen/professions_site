@@ -1,3 +1,5 @@
+import random
+
 from django import template
 
 register = template.Library()
@@ -20,3 +22,10 @@ def strip_tags(val):
 	import re
 	clean = re.compile('<.*?>')
 	return re.sub(clean, '', val)
+
+
+@register.simple_tag
+def random_int(a, b=None):
+	if b is None:
+		a, b = 0, a
+	return random.randint(a, b)
