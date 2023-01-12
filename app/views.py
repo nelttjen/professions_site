@@ -7,6 +7,7 @@ import os
 import comtypes.client
 import requests
 import docx
+from docx.shared import Inches
 
 from django.shortcuts import render
 from django.http import HttpResponseNotFound, HttpResponseBadRequest, FileResponse
@@ -256,9 +257,8 @@ def generate_pdf(dest, rows):
 			for in_row in row:
 				if DOMAIN in in_row:
 					link = in_row.replace(DOMAIN, '')[1:]
-					picture = doc.add_picture(link)
-					if picture.width > 800:
-						picture.width = 800
+					picture = doc.add_picture(link, width=Inches(5))
+
 				elif '%' in in_row:
 					items = in_row.split('%, ')
 					items[-1] = items[-1][:-1]
