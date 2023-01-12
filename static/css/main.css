@@ -58,6 +58,7 @@ html {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
   font-size: 0.5208333333vw;
+  scroll-behavior: smooth;
 }
 @media (max-width: 1440px) {
   html {
@@ -94,7 +95,6 @@ html {
 
 .page {
   height: 100%;
-  font-family: var(--font-family, sans-serif);
   -webkit-text-size-adjust: 100%;
 }
 
@@ -102,6 +102,7 @@ html {
   margin: 0;
   min-width: 32rem;
   min-height: 100%;
+  font-family: var(--font-family, sans-serif);
 }
 
 img {
@@ -407,6 +408,7 @@ a {
 }
 
 .suits {
+  position: relative;
   padding-bottom: 4.4rem;
 }
 .suits__title {
@@ -1069,4 +1071,14 @@ a {
   font-size: 3.2rem;
   line-height: 3.9rem;
   color: var(--light-color);
+}
+
+.go-to-top {
+  position: absolute;
+  right: 4rem;
+  bottom: 15rem;
+}
+.go-to-top img {
+  width: 5.6rem;
+  height: 5.6rem;
 }

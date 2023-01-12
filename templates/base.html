@@ -21,7 +21,7 @@
     {% endblock %}
 </head>
 <body class="page__body">
-    <header class="header">
+    <header class="header" id="header">
         <div class="container">
         <nav class="nav" title="Главное меню">
           <ul class="list-reset nav__list">
@@ -41,6 +41,9 @@
                 <div class="footer__text">Никифоров Роман Евгеньевич</div>
                 <div class="footer__text">РИ-210948</div>
             </div>
+            <a href="#header" class="go-to-top">
+    <img loading="lazy" src="{% static "img/go-to-top.svg" %}" class="image" width="56" height="56" alt="Вернуться в начало">
+  </a>
         </footer>
     </div>
 </body>
