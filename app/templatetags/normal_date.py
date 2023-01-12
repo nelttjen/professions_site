@@ -7,9 +7,12 @@ register = template.Library()
 
 @register.filter(name='to_normal_date')
 def normalize_date(val):
-	date, time = val.split('T')
-	time = time.split('+')[0]
-	return f'{date} в {time}'
+	try:
+		date, time = val.split('T')
+		time = time.split('+')[0]
+		return f'{date} в {time}'
+	except:
+		return val
 
 
 @register.filter(name='normal_cur')
