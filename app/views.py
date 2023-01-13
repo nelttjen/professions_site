@@ -239,7 +239,7 @@ def prepare_rows(prof):
 
 
 def generate_csv(dest, rows):
-	new_file = xlsxwriter.Workbook(dest)
+	new_file = xlsxwriter.Workbook(BASE_DIR / dest)
 	sheet = new_file.add_worksheet('Информация')
 	for r, row in enumerate(rows):
 		for c, item in enumerate(row):
@@ -272,7 +272,7 @@ def doc2pdf_linux(doc):
 	convert a doc/docx document to pdf format (linux only, requires libreoffice)
 	:param doc: path to document
 	"""
-	cmd = 'libreoffice --convert-to pdf'.split() + [doc]
+	cmd = 'libreoffice --convert-to pdf'.split() + [BASE_DIR / doc]
 	p = subprocess.Popen(cmd, stderr=subprocess.PIPE, stdout=subprocess.PIPE)
 	p.wait(timeout=10)
 	stdout, stderr = p.communicate()
