@@ -64,7 +64,7 @@ def prof_view_vostr(request, prof_id):
 	if year_diagram:
 		link = f'media/year_diagram/{year_diagram.id}.jpg'
 		try:
-			with open(link, 'wb') as file:
+			with open(BASE_DIR / link, 'wb') as file:
 				file.write(year_diagram.image)
 		except:
 			link = NO_IMAGE_LINK
@@ -80,7 +80,7 @@ def prof_view_vostr(request, prof_id):
 	if vacancies_diagram:
 		link = f'media/vacancies_diagram/{vacancies_diagram.id}.jpg'
 		try:
-			with open(link, 'wb') as file:
+			with open(BASE_DIR / link, 'wb') as file:
 				file.write(vacancies_diagram.image)
 		except:
 			link = NO_IMAGE_LINK
@@ -109,7 +109,7 @@ def prof_view_geo(request, prof_id):
 	if cities_diagram:
 		link = f'media/year_diagram/{cities_diagram.id}.jpg'
 		try:
-			with open(link, 'wb') as file:
+			with open(BASE_DIR / link, 'wb') as file:
 				file.write(cities_diagram.image)
 		except:
 			link = NO_IMAGE_LINK
@@ -125,7 +125,7 @@ def prof_view_geo(request, prof_id):
 	if cities_vacancies_diagram:
 		link = f'media/vacancies_diagram/{cities_vacancies_diagram.id}.jpg'
 		try:
-			with open(link, 'wb') as file:
+			with open(BASE_DIR / link, 'wb') as file:
 				file.write(cities_vacancies_diagram.image)
 		except:
 			link = NO_IMAGE_LINK
@@ -313,12 +313,13 @@ def generate_pdf(dest, rows):
 				else:
 					doc.add_paragraph(in_row)
 	doc.save(doc_path)
-	comtypes.CoInitialize()
-	word = comtypes.client.CreateObject('Word.Application')
-	doc = word.Documents.Open(str(BASE_DIR / doc_path))
-	doc.SaveAs(str(BASE_DIR / dest), FileFormat=wdFormatPDF)
-	doc.Close()
-	word.Quit()
+	doc2pdf(doc_path)
+	# comtypes.CoInitialize()
+	# word = comtypes.client.CreateObject('Word.Application')
+	# doc = word.Documents.Open(str(BASE_DIR / doc_path))
+	# doc.SaveAs(str(BASE_DIR / dest), FileFormat=wdFormatPDF)
+	# doc.Close()
+	# word.Quit()
 
 
 def download_csv(request, prof_id):
