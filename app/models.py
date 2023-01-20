@@ -66,8 +66,11 @@ class CitiesDiagram(models.Model):
 
 	def save(self, *args, **kwargs):
 		if self.image_raw:
-			img_file = self.image_raw.open('rb')
-			self.image = img_file.read()
+			try:
+				img_file = self.image_raw.open('rb')
+				self.image = img_file.read()
+			except:
+				pass
 		super(CitiesDiagram, self).save(*args, **kwargs)
 
 	def __str__(self):
@@ -87,8 +90,11 @@ class CitiesVacanciesDiagram(models.Model):
 
 	def save(self, *args, **kwargs):
 		if self.image_raw:
-			img_file = self.image_raw.open('rb')
-			self.image = img_file.read()
+			try:
+				img_file = self.image_raw.open('rb')
+				self.image = img_file.read()
+			except:
+				pass
 		super(CitiesVacanciesDiagram, self).save(*args, **kwargs)
 
 	def __str__(self):
@@ -108,8 +114,11 @@ class VacanciesDiagram(models.Model):
 
 	def save(self, *args, **kwargs):
 		if self.image_raw:
-			img_file = self.image_raw.open('rb')
-			self.image = img_file.read()
+			try:
+				img_file = self.image_raw.open('rb')
+				self.image = img_file.read()
+			except:
+				pass
 		super(VacanciesDiagram, self).save(*args, **kwargs)
 
 	def __str__(self):
